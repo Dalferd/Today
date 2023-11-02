@@ -1,0 +1,11 @@
+ORG 0000H
+MOV R0,#5 ; Number N
+MOV A, R0 ; Moving data from R0 to A
+ACALL FACT ; 11bit function call
+fact:DEC R0 ; Decreasing the R0 content
+CJNE R0, #01, L1 ; value of R0 is compared with 1
+SJMP stop ; if R0=1, stop execution
+L1:MOV B, R0 ; Moving R0 data in B register
+MUL AB ; Multiplying data of A and B
+ACALL FACT ; Calling back the same function stop
+END

@@ -1,0 +1,48 @@
+ORG 0000H
+Mov A, #38H ; use 2 lines and 5*7
+ACALL CSR ; Subroutine for reading input as command
+MOV A, #0EH ; Cursor blinking off
+ACALL CSR
+MOV A, #85H ; Force cursor to first line
+ACALL CSR
+MOV A, #01H ; Clear screen
+ACALL CSR
+MOV A, #85H ; Move cursor to 5th position on 1st line
+ACALL CSR
+MOV DPTR ,#LOne ; Input string one is moved to DPTR
+REV : MOV A,#00H ; Accumulator is cleared
+MOVC A,@A+DPTR ; First letter moved to Accumulator
+JZ NXT ; Jump if all letters displayed
+ACALL DSR ; Subroutine for reading input as data
+INC DPTR
+SJMP REV ; Repeat till all letters are printed
+NXT:MOV A,#0C4H ; Move cursor to 4th position of 2nd line
+ACALL CSR
+MOV DPTR ,#LTwo ; Input string one is moved to DPTR
+REPEAT : MOV A,#00H
+MOVC A,@A+DPTR
+JZ FINISH ; Jump if all letters displayed
+ACALL DSR
+INC DPTR
+SJMP REPEAT
+FINISH: SJMP FINISH
+CSR: ACALL DEL_ROUTINE
+MOV P1, A
+CLR P2.1
+SETB P2.2
+CLR P2.2
+RET
+DSR: ACALL DEL_ROUTINE
+MOV P1, A
+SETB P2.1
+SETB P2.2
+CLR P2.2
+RET
+DEL_ROUTINE: MOV R0, #0FFH
+L1: MOV R1, #0FFH
+L2: DJNZ R1, L2
+DJNZ R0, L1
+RET
+LOne : DB 'IIITN',0 ; Input string one
+LTwo : DB 'ECE DEPT.',0 ; Input string two
+END

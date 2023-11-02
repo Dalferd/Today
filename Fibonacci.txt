@@ -1,0 +1,23 @@
+ORG 0040H ; Assembler directive
+MOV R1, #0AH ; move 10 in R1
+MOV R2, #00H ; clear R2
+MOV A, #00H ; move first number 0 in A
+MOV DPTR, #2000H ; move 2000 loc in DPTR
+MOVX @DPTR, A ; move 0 to DPTR loc
+INC A ; A= A+1
+INC DPTR ; DPTR = DPTR +1
+MOVX @DPTR, A ; move 1 in next DPTR location
+DEC R1 ; decrement R1
+DEC R1 ; decrement R1
+INC DPTR ; DPTR = DPTR +1
+MOV A, #00H ; move 0 in A
+MOV B, #01H ; move 1 in B
+LOOP: ADD A, B ; A = A + B
+MOV R2, A ; move A content to R2
+MOVX @DPTR, A ; move next Fibonacci number to
+DPTR loc
+INC DPTR ; DPTR = DPTR +1
+MOV A,B ; move B to A
+MOV B, R2 ; move R2 to B
+DJNZ R1,LOOP  ; decrement and jump to label until 0
+END

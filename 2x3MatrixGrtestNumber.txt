@@ -1,0 +1,34 @@
+ORG 0050H ; Assembler directive
+MOV R0, #02H ; counter of 2 in RO
+MOV DPTR, #5000H ; DPTR <- 5000H
+MOVX A, @DPTR ; A <- DPTR
+L3: MOV B, A ; B <- A
+L2: INC DPTR ; DPTR = DPTR + 1
+MOVX A, @DPTR ; Externally move A <- DPTR
+CJNE A, B, Li ; Compare contents of A and B and jump to
+label if not equal
+L1: DJNZ RO, LOCI ; decrement RO by 1 and jump if zero
+JMP NEXTROW ; jump to location
+LOC1: JNC L3 ; jump to label if no carry
+JMP L2 ; Unconditional jump to label
+NEXTROW: MOV RO, #02H ; counter of 2 in RO
+MOV R1, A ; R1 <- A
+MOV DPTR, #6000H ; DFTR <- 6000H
+MOVX A, DETR ; A <- DPTR
+L6: MOV B, A ; B <- A
+L5: INC DPTR
+MOVX A, DPTR ; DPTR = DETR +
+CINE A, B, L4 ; compare contents of A and B and jump to
+label if not equal
+L4: DJNZ RO, LOC2 ; decrement RO by 1 and jump if zero
+JMP RESULT
+LOC2: JNC L6 ; decrement to label
+jump to label if no carry
+JMP L5 ; unconditional jump to label
+RESULT: MOV A, R1 ; A <- R1
+CJNE A, B, L7 ; compare contents of A and B and jump to
+label if not equal
+L7: JNC L8 ; jump to label if no carry
+MOV R3, B ; R3 <- B
+LB: MOV R3, A ; R3 <- A
+END

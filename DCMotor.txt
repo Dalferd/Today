@@ -1,0 +1,27 @@
+ORG 00H // initiall starting address
+MOV P3,#00000000B // initiates P3 as the pushbutton interface 
+MOV P1,#00000000B // clears P1 for keeping the motor OFF initially 
+MAIN:MOV A,P3 // moves the current state of P3 to Accumulator 
+CJNE A,#00000001B,LABEL1 // checks whether S2 is pressed 
+MOV P1,#00000001B // makes the motor run clockwise 
+LABEL1:CJNE A,#00000010B,LABEL2 // checks whether S3 is pressed 
+MOV P1,#00000010B // makes the motor to run anti clockwise 
+LABEL2:SJMP MAIN // jumps back to the MAIN loop END 
+
+
+
+
+
+ORG 0000H
+SETB P2.0
+MAIN: MOV P0 , #01H ;For Clockwise Rotation
+ACALL DELAY
+MOV P0,#02H ;For Anti-Clockwise Rotation
+JMP MAIN
+DELAY:MOV R0,#0FH ;Delay Subroutine
+D3:MOV R1,#00H
+D2:MOV R2,#00H
+D1:DJNZ R3, D1
+DJNZ R1,D2
+DJNZ R0,D3
+END

@@ -1,0 +1,32 @@
+ORG 0000H
+MOV P1, #0FFH ; Declare port 1 as input port
+MOV P3, #0FFH
+MOV P2, #00H ; Declare port 2 as output port
+MOV TMOD, #01H
+AGAIN: SETB P3.7 ; Setting as read pin
+SETB P3.6 ; Setting as write pin
+ACALL DEL ; Delay subroutine is called
+CLR P3.6 ; Value of write pin is cleared
+WAIT: JB P3.5, WAIT ; Wait if there is an interrupt
+CLR P3.7 ; Value of read pin is cleared
+ACALL DEL
+MOV A, P1 ; Read the ADC value from port1
+ACALL DEL
+MOV P2, A ;Send the value to output port2
+ACALL DEL
+JMP AGAIN
+DEL: MOV R1, #04H
+REP: MOV TH0, #3CH
+MOV TL0, #0B0H
+SETB TR0
+CHK: JNB TF0, CHK
+CLR TR0
+CLR TF0
+DJNZ R1, REP
+RET
+DEL2: MOV R2, #02H
+HERE1: MOV R3, #0FFH
+HERE2: DJNZ R3, HERE2
+DJNZ R2, HERE1
+RET
+END

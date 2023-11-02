@@ -1,0 +1,13 @@
+ORG 0000H
+MOV DPTR , #3000H ; External Location of 3000
+MOV R2, #10 ; Setting up counter of10
+MOV R3, #00 ;Storing odd count
+MOV R4, #00 ; Storing even count
+L1: MOVX A, @DPTR ; Loop for counter
+JB ACC.0, L2 ; Checking if number is odd
+INC R4 ; Else if even, inc even count
+SJMP L6 ; Exclude L2 Loop
+L2: INC R3
+L6: INC DPTR ; INC DPTR
+DJNZ R2, L1 ; Checking in counter if not zero
+END

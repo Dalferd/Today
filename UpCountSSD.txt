@@ -1,0 +1,44 @@
+ORG 0000H ; Assembler directive
+MOV TMOD, #01H ; Timer 1 mode 2
+MOV P2, #00H ; Port 2 output port
+AGAIN: MOV A, #3FH
+MOV P2, A ; Display 0
+ACALL DELAY
+MOV A, #06H ; Display 1
+MOV P2, A
+ACALL DELAY
+MOV A, #5BH ; Display 2
+MOV P2, A
+ACALL DELAY
+MOV A, #4FH ; Display 3
+MOV P2, A
+ACALL DELAY
+MOV A, #66H ; Display 4
+MOV P2, A
+ACALL DELAY
+MOV A, #6DH ; Display 5
+MOV P2, A
+ACALL DELAY
+MOV A, #7DH ; Display 6
+MOV P2, A
+ACALL DELAY
+MOV A, #07H ; Display 7
+MOV P2, A
+ACALL DELAY
+MOV A, #7FH ; Display 8
+MOV P2, A
+ACALL DELAY
+MOV A, #6FH ; Display 9
+MOV P2, A
+ACALL DELAY
+JMP AGAIN
+DELAY: MOV R1, #20 ; Delay subroutine
+REP: MOV TH0, #3CH
+MOV TL0, #0B0H ; Count value fed
+SETB TR0
+CHK: JNB TF0, CHK ; Check TF0
+CLR TR0
+CLR TF0
+DJNZ R1, REP ; Repeat 20 times
+RET
+END

@@ -1,0 +1,19 @@
+ORG 0100H
+BACK: MOV A,#00H ; load 0 in A
+INCR:MOV P2,A ; move 0 to port 2
+ACALL DELAY ; call delay
+INC A ; A = A+1
+CJNE A,#0FFH, INCR ; compare with ff and repeat if not equal
+MOV A, #0FFH ; load ff in A
+DECR:MOV P2, A ; move it to p2
+ACALL DELAY ; call delay
+DEC A ; A=A-1
+CJNE A, #00H, DECR ; compare with 0 and repeat if not equal
+SJMP BACK ; repeat process
+DELAY:MOV R0, #255 ; delay routine for 65 msec delay
+approximate
+HERE1:MOV R1, #255
+HERE: DJNZ R1, HERE
+DJNZ R0, HERE1
+RET
+END

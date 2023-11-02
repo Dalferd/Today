@@ -1,0 +1,12 @@
+ORG 0000H ; Assembler directive
+CLR P1.2 ; Make pin P1.2 as output
+MOV TMOD, #01H ; Timer 0 mode 1
+REP: MOV TH0, #0FFH ; Count fed in TH0
+MOV TL0, #11H ; Count fed in TL0
+CPL P1.2 ; Complement pin P1.2
+SETB TR0 ; Start timer
+CHECK: JNB TF0, CHECK ; Check TF0
+CLR TR0 ; Clear TR0
+CLR TF0 ; Clear TF0
+JMP REP ; Repeat operation
+END

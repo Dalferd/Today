@@ -1,0 +1,19 @@
+ORG 0050H ; Assembler directive
+CLR P1.2 ; P1.2 as output port
+MOV TMOD, #01H ; Timer 0 mode 1
+ON: MOV TH0, #0FEH ; Count load on time
+MOV TL0, #0ABH ; Count load on time
+CPL P1.2 ; Complement pin 1.2
+SETB TR0 ; Start counter
+CHECK1: JNB TF0, CHECK1 ; Check TF0
+CLR TR0 ; Clear TR0
+CLR TF0 ; Clear TF0
+OFF: MOV TH0, #0FFH ; Count load off time
+MOV TL0, #75H ; Count load off time
+CPL P1.2 ; Complement pin 1.2
+SETB TR0 ; Start counter
+CHECK2: JNB TF0, CHECK2 ; Check TF0
+CLR TR0 ; Clear TR0
+CLR TF0 ; Clear TF0
+JMP ON ; Repeat
+END
